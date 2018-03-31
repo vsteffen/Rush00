@@ -85,15 +85,15 @@ BoardGame &					BoardGame::operator=( BoardGame const & rhs ) {
 	return *this;
 }
 
-bool						BoardGame::addEntity( Entity ** entity ) {
+bool						BoardGame::addEntity( Entity * entity ) {
 
-	if (*entity == NULL) {
+	if (entity == NULL) {
 		return false;
 	}
 
 	// Y == LINES, X == COLS
-	int			x = (*entity)->getXPos();
-	int			y = (*entity)->getYPos();
+	int			x = (entity)->getXPos();
+	int			y = (entity)->getYPos();
 
 	if (y > this->_nbLines || y < 0 || x > this->_nbCols || x < 0) {
 		std::cout << "ERROR" << std::endl;
@@ -103,8 +103,8 @@ bool						BoardGame::addEntity( Entity ** entity ) {
 	// TODO NE PEUX PAS ADD SI DEJA QUELQUE CHOSE 
 
 	this->_nbEntities++;
-	this->_entities[y][x] = *entity;
-	this->push(*entity);
+	this->_entities[y][x] = entity;
+	this->push(entity);
 	return true;
 }
 
@@ -218,7 +218,7 @@ void						BoardGame::getBoard( void ) const {
 		for (int j = 0; j < this->_nbCols; ++j) {
 
 			if (this->_entities[i][j] != NULL) {
-				std::cout << "FOUND ARRAY i(y) : " << i << " j(x) " << j << this->_entities[i][j]->getXPos() << std::endl;
+				std::cout << "FOUND ARRAY i(y) : " << i << " j(x) " << j << " "<<this->_entities[i][j]->getXPos() << std::endl;
 			}
 		}
 	}

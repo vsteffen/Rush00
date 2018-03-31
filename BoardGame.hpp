@@ -30,7 +30,7 @@ public:
 	virtual ~BoardGame( void );
 
 	BoardGame &				operator=( BoardGame const & rhs );
-	bool					addEntity( Entity ** perso );
+	bool					addEntity( Entity * perso );
 	bool					push( Entity* );
 	void					deleteEntity( int x, int y );
 	void					deleteEntity( Entity * entity );

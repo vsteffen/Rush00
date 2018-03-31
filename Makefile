@@ -16,10 +16,11 @@ CC = clang++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 LDFLAGS = -lncurses
 
-# INC = $(wildcard *.hpp)
+INC = $(wildcard *.hpp)
 LIBS =
 
-SRC = ncurses.cpp
+# SRC = $(wildcard *.cpp)
+SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp
 OBJ = $(SRC:%.cpp=%.o)
 
 _RED		=	\033[0;31m
