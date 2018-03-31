@@ -20,7 +20,9 @@ INC = $(wildcard *.hpp)
 LIBS =
 
 # SRC = $(wildcard *.cpp)
-SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp
+SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp \
+		ft_retro.cpp print.cpp
+
 OBJ = $(SRC:%.cpp=%.o)
 
 _RED		=	\033[0;31m
@@ -52,4 +54,8 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "$(_BLUE)$(NAME) Deleted$(_RESET)"
 
+<<<<<<< HEAD
 re: fclean all
+=======
+re: fclean all
+>>>>>>> origin/vsteffen
