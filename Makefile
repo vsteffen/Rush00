@@ -54,8 +54,4 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "$(_BLUE)$(NAME) Deleted$(_RESET)"
 
-<<<<<<< HEAD
 re: fclean all
-=======
-re: fclean all
->>>>>>> origin/vsteffen
