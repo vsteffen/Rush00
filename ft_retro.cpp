@@ -12,10 +12,17 @@
 
 #include "ft_retro.hpp"
 
-#include "BoardGame.hpp"
 #include "Entity.hpp"
 #include "Character.hpp"
 #include "Enemy.hpp"
+
+# include <ncurses.h>
+# include <string>
+# include <unistd.h>
+# include <stdio.h>
+# include <signal.h>
+# include <stdlib.h>
+# include "BoardGame.hpp"
 
 #include <fstream>
 
@@ -23,6 +30,9 @@
 #define DELAY 25000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
+
+// void			print_top(WINDOW *win, BoardGame * board);
+
 
 int			score = 0;
 
@@ -83,6 +93,19 @@ int			handle_key(BoardGame* board, int key, Entity* perso)
 	return (0);
 }
 
+void		print_top(WINDOW *win, BoardGame * board) {
+	std::string		str("");
+
+	str += getmaxy(win);
+	mvprintw(0, 0, "SCORE: ");
+
+	debug_int(0, 7, board->getScore());
+	// debug_int(0, 7, score++);
+
+	mvprintw(1, 0, getHSep(getmaxx(win)));
+}
+
+
 int				main ( void ) {
 	WINDOW 		*win;
 	int			key = 0;
@@ -111,7 +134,8 @@ int				main ( void ) {
 		if (key == ' ') {
 			// mvprintw(getmaxy(win) - 15, 0, "CA MARCHE ");
 			while(key != 27 && key != 10) {
-				print_top(win);
+				print_top(win, board);
+				// print_top(win);
 				board->printBoard();
 				key = getch();
 				if (perso->getHitPoints() == 0) {

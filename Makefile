@@ -13,15 +13,15 @@
 NAME = ft_retro
 
 CC = clang++
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 LDFLAGS = -lncurses
 
 INC = $(wildcard *.hpp)
 LIBS =
 
-# SRC = $(wildcard *.cpp)
-SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp \
-		ft_retro.cpp print.cpp Shoot.cpp
+SRC = $(wildcard *.cpp)
+# SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp \
+# 		ft_retro.cpp print.cpp Shoot.cpp
 
 OBJ = $(SRC:%.cpp=%.o)
 
