@@ -17,12 +17,12 @@
 /* ************************************************************************** */
 
 /** ( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP ) **/
-Character::Character( void ) : Entity( "Character", 0, 0, 1, 1, 0, 5 ) {
+Character::Character( void ) : Entity( "Character", 1, 0, 0, 1, 1, 0, 5 ) {
 	// std::cout << "Character default constructor called" << std::endl;
 }
 
-Character::Character( std::string name, int x, int y, int xVel, int yVel, int score, int HP ) : 
-	Entity( name, x, y, xVel, yVel, score, HP ) {
+Character::Character( std::string name, int type, int x, int y, int xVel, int yVel, int score, int HP ) :
+	Entity( name, type, x, y, xVel, yVel, score, HP ) {
 	// std::cout << "Character default constructor called" << std::endl;
 }
 
@@ -44,7 +44,7 @@ Character::~Character( void ) {
 /* ************************************************************************** */
 
 Character &					Character::operator=( Character const & rhs ) {
-	
+
 	this->Entity::operator=(rhs);
 	// std::cout << "Character assignation operator called" << std::endl;
 	// this->_name = rhs.getName();
@@ -54,7 +54,7 @@ Character &					Character::operator=( Character const & rhs ) {
 
 bool						Character::touch( Entity * entity ) {
 	// 2 == Enemy
-	if (entity->getType() == 2) {
+	if (entity->getType() % 10 == 2 || entity->getType() % 10 == 3) {
 		this->setHitPoints(0);
 		return true;
 	}

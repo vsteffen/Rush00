@@ -20,7 +20,7 @@ class Character : virtual public Entity {
 
 public:
 	Character( void );
-	Character( std::string, int, int, int, int, int, int );
+	Character( std::string, int, int, int, int, int, int, int );
 	Character( Character const & src );
 	virtual ~Character( void );
 

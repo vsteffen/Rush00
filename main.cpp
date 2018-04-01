@@ -22,12 +22,12 @@ int					main2( void ) {
 
 	BoardGame *		board = new BoardGame(20, 20);
 
-	Entity *		perso = new Character("Link", 5, 5, 1, 1, 0, 5);
+	Entity *		perso = new Character("Link", 1, 5, 5, 1, 1, 0, 5);
 	board->addEntity(perso);
 std::cout << "SECOND " << std::endl;
 	board->deleteEntity(perso);
 
-	Entity *		perso2 = new Character("test", 5, 5, 1, 1, 0, 5);
+	Entity *		perso2 = new Character("test", 1, 5, 5, 1, 1, 0, 5);
 	board->addEntity(perso2);
 	board->moveDown(perso2);
 
@@ -74,4 +74,3 @@ std::cout << "TROISIEME " << std::endl;
 
 	return 0;
 }
-

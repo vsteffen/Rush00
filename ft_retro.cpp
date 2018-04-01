@@ -19,8 +19,7 @@
 
 #include <fstream>
 
-
-#define DELAY 25000
+#define DELAY 30000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
 
@@ -131,13 +130,13 @@ int				main ( void ) {
 				wrefresh(win);
 				usleep(DELAY);
 				clear();
-			}	
+			}
 		}
 		wrefresh(win);
 		usleep(DELAY);
 		clear();
 	}
-	
+
 	endwin();
 	delete board;
 	return 0;

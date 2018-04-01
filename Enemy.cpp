@@ -17,12 +17,12 @@
 /* ************************************************************************** */
 
 /** ( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP ) **/
-Enemy::Enemy( void ) : Entity( "Enemy", 0, 0, 1, 1, 5, 1 ) {
+Enemy::Enemy( void ) : Entity( "Enemy", 2, 0, 0, 1, 1, 5, 1 ) {
 	// std::cout << "Enemy default constructor called" << std::endl;
 }
 
-Enemy::Enemy( std::string name, int x, int y, int xVel, int yVel, int score, int HP ) :
-	Entity(name, x, y, xVel, yVel, score, HP) {
+Enemy::Enemy( std::string name, int type, int x, int y, int xVel, int yVel, int score, int HP ) :
+	Entity(name, type, x, y, xVel, yVel, score, HP) {
 	// std::cout << "Enemy default constructor called" << std::endl;
 }
 
@@ -53,7 +53,7 @@ Enemy &					Enemy::operator=( Enemy const & rhs ) {
 
 bool					Enemy::touch( Entity * entity ) {
 	// 3 == SHOOT, 2 == ENEMY
-	if (entity->getType() == 3 || entity->getType() == 2) {
+	if (entity->getType() == 3 || entity->getType() % 10 == 2) {
 		this->setHitPoints(0);
 		return true;
 	}
@@ -69,8 +69,9 @@ bool					Enemy::touch( Entity * entity ) {
 /* ************************************************************************** */
 
 int						Enemy::getType( void ) const {
-	return 2;	
+	return this->_type;
 }
+
 
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */

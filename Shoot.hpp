@@ -20,14 +20,15 @@ class Shoot : virtual public Entity {
 
 public:
 	Shoot( void );
-	Shoot( int x, int y );
-	Shoot( std::string, int, int, int, int, int, int );
+	Shoot( int x, int y, bool direction);
+	Shoot( std::string, int, int, int, int, int, int, int );
 	Shoot( Shoot const & src );
 	virtual ~Shoot( void );
 
 	Shoot &				operator=( Shoot const & rhs );
 
 	int						getType( void ) const;
+	bool					getDirection( void ) const;
 
 	bool					touch( Entity * entity );
 

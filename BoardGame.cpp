@@ -171,8 +171,11 @@ void						BoardGame::printBoard( void ) const {
 				if (this->_entities[i][j]->getType() == 1) {
 					mvprintw(i, j, "O");
 				}
-				else if (this->_entities[i][j]->getType() == 2) {
-					mvprintw(i, j, "M");
+				else if (this->_entities[i][j]->getType() % 10 == 2) {
+					if (this->_entities[i][j]->getType() == 2)
+						mvprintw(i, j, "M");
+					else
+						mvprintw(i, j, "T");
 				}
 				else {
 					mvprintw(i, j, "*");
@@ -200,7 +203,7 @@ bool						BoardGame::resolve( void ) {
 		if (type == 1) {
 
 		}
-		else if (type == 2) {
+		else if (type % 10 == 2) {
 
 			// Si l'ennemi est tout en bas il disparait
 			if (list != NULL && list->entity->getYPos() >= this->_nbLines - 1) {
@@ -215,14 +218,26 @@ bool						BoardGame::resolve( void ) {
 			else if (rand() % 10 == 0) {
 				this->moveLeft(list->entity);
 			}
+			else if (list->entity->getType() == 12 && rand() % 15 == 1) {
+				this->shoot(list->entity);
+			}
 		}
 		else if (type == 3) {
-			if (list != NULL && list->entity->getYPos() <= 1) {
-				deleteEntity(list->entity);
+			if (list->entity->getDirection() == TRUE) {
+				if (list != NULL && list->entity->getYPos() <= 1) {
+					deleteEntity(list->entity);
+				}
+				else {
+					this->moveUp(list->entity);
+				}
 			}
 			else {
-				this->moveUp(list->entity);
-					
+				if (list != NULL && list->entity->getYPos() >= this->_nbLines - 1) {
+					deleteEntity(list->entity);
+				}
+				else {
+					this->moveDown(list->entity);
+				}
 			}
 		}
 		list = this->_save;
@@ -230,15 +245,35 @@ bool						BoardGame::resolve( void ) {
 
 	if (this->_nbEntities < this->_nbCols) {
 		if (rand() % 10 == 1) {
-			Entity * newEnemy = new Enemy("enemy", rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
-			this->addEntity(newEnemy);
+			if (rand() % 5 == 1) {
+				Entity * newEnemy = new Enemy("enemy", 12, rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
+				this->addEntity(newEnemy);
+			}
+			else {
+				Entity * newEnemy = new Enemy("enemy", 2, rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
+				this->addEntity(newEnemy);
+			}
 		}
 	}
+
+
+	// enemy shoot
+	// list = this->_list;
+	// while (list) {
+    //
+	// 	list = list->next;
+	// }
 	return true;
 }
 
 bool						BoardGame::shoot( Entity * entity ) {
-	Entity *				shoot = new Shoot(entity->getXPos(), entity->getYPos() - 1);
+	Entity *	shoot;
+	if (entity->getType() % 10 == 1) {
+		shoot = new Shoot(entity->getXPos(), entity->getYPos() - 1, TRUE);
+	}
+	else {
+		shoot = new Shoot(entity->getXPos(), entity->getYPos() + 1, FALSE);
+	}
 	this->addEntity(shoot);
 	return true;
 }
@@ -363,11 +398,17 @@ void						BoardGame::getBoard( void ) const {
 		for (int j = 0; j < this->_nbCols; j++) {
 
 			if (this->_entities[i][j] != NULL) {
-				if (this->_entities[i][j]->getType() == 2)
-					std::cout << "M ";
+				if (this->_entities[i][j]->getType() % 10 == 2) {
+					if (this->_entities[i][j]->getType() == 2) {
+						std::cout << "M ";
+					}
+					else {
+						std::cout << "T ";
+					}
+				}
 				else if (this->_entities[i][j]->getType() == 3)
 					std::cout << "* ";
-				else 
+				else
 					std::cout << "O ";
 			}
 			else {
