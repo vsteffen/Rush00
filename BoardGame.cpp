@@ -17,14 +17,12 @@
 /* ************************************************************************** */
 
 BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbCols) {
-	std::cout << "BoardGame default constructor called" << std::endl;
-
 	// Initialisation [][] entities
 	this->_entities = new Entity**[this->_nbLines];
 
-	for (int i = 0; i < this->_nbLines; ++i) {
+	for (int i = 0; i < this->_nbLines; i++) {
         this->_entities[i] = new Entity*[this->_nbCols];
-        for (int j = 0; j < this->_nbCols; ++j) {
+        for (int j = 0; j < this->_nbCols; j++) {
             this->_entities[i][j] = NULL;
         }
     }
@@ -33,10 +31,10 @@ BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbC
     this->_list = NULL;
     this->_nbEntities = 0;
     this->_nbPlayers = 1;
+    this->_save = NULL;
 }
 
 BoardGame::BoardGame( BoardGame const & src ) {
-	std::cout << "BoardGame copy constructor called" << std::endl;
 	*this = src;
 }
 
@@ -45,7 +43,6 @@ BoardGame::BoardGame( BoardGame const & src ) {
 /* ************************************************************************** */
 
 BoardGame::~BoardGame( void ) {
-	std::cout << "BoardGame destructor called" << std::endl;
 
 	// Delete [][] _entities
 	for (int i = 0; i < this->_nbLines; ++i) {
@@ -77,7 +74,6 @@ BoardGame::~BoardGame( void ) {
 
 BoardGame &					BoardGame::operator=( BoardGame const & rhs ) {
 	( void ) rhs;
-	std::cout << "BoardGame assignation operator called" << std::endl;
 
 	return *this;
 }
@@ -93,14 +89,17 @@ bool						BoardGame::addEntity( Entity * entity ) {
 	int			y = (entity)->getYPos();
 
 	if (y > this->_nbLines || y < 0 || x > this->_nbCols || x < 0) {
-		std::cout << "ERROR" << std::endl;
 		return false;
 	}
 
-	// TODO NE PEUX PAS ADD SI DEJA QUELQUE CHOSE 
+	while (this->_entities[y][x] != NULL) {
+		x++;
+	}
 
 	this->_nbEntities++;
+	entity->setXPos(x);
 	this->_entities[y][x] = entity;
+
 	this->push(entity);
 	return true;
 }
@@ -129,43 +128,35 @@ void						BoardGame::deleteEntity( int x, int y ) {
 	if (this->_entities[y][x] != NULL) {
 		deleteEntity(this->_entities[y][x]);
 	}
-	else {
-		std::cout << "Entity not found" << std::endl;
-	}
 }
 
 void						BoardGame::deleteEntity( Entity * entity ) {
-	t_list*			list;
-	t_list*			tmp = NULL;
-	t_list*			tmp2 = NULL;
+	t_list*			current = this->_list;
+	t_list*			ptrBefore = NULL;
+	t_list*			ptrNext = NULL;
 
 
-	list = this->_list;
-	while (list != NULL) {
-		if (entity == list->entity) {
+	while (current != NULL) {
+		std::cout << *(current->entity) << std::endl;
+		if (entity == current->entity) {
 
-			// std::cout << "FOUND DELETE " << *(list->entity) << std::endl;
-			tmp2 = list->next;
-			this->_entities[list->entity->getYPos()][list->entity->getXPos()] = NULL;
+			ptrNext = current->next;
+			this->_entities[current->entity->getYPos()][current->entity->getXPos()] = NULL;
 			this->_nbEntities--;
+			delete current->entity;
+			current->entity = NULL;
+			delete current;
+			current = NULL;
 
-			delete list->entity;
-			delete list;
-			list = NULL;
-
-			if (tmp != NULL) {
-				tmp->next = tmp2;
-			}
-			else {
-				this->_list = NULL;
-			}
-			return;
+			if (ptrBefore != NULL)
+				ptrBefore->next = ptrNext;
+			else
+				this->_list = ptrNext;
+			return ;
 		}
-		tmp = list;
-		list = list->next;
+		ptrBefore = current;
+		current = current->next;
 	}
-	// std::cout << "Entity not found" << std::endl;
-
 }
 
 /* ************************************************************************** */
@@ -198,51 +189,48 @@ void						BoardGame::printBoard( void ) const {
 
 bool						BoardGame::resolve( void ) {
 	t_list *				list;
-	t_list *				tmp;
 
 	list = this->_list;
+	this->_save = list;
 	while (list != NULL) {
-		tmp = list->next;
+
+		this->_save = this->_save->next;
+
 		int			type = list->entity->getType();
 		if (type == 1) {
 
 		}
 		else if (type == 2) {
 
-			// std::cout<<"moveDown1"<<std::endl;
-			// std::cout << list->entity->getYPos() <<std::endl;
-			// std::cout<<"moveDown2"<<std::endl;
-
 			// Si l'ennemi est tout en bas il disparait
 			if (list != NULL && list->entity->getYPos() >= this->_nbLines - 1) {
 				deleteEntity(list->entity);
 			}
-			else {
+			else if (rand() % 5 == 0) {
 				this->moveDown(list->entity);
+			}
+			else if (rand() % 10 == 0) {
+				this->moveRight(list->entity);
+			}
+			else if (rand() % 10 == 0) {
+				this->moveLeft(list->entity);
 			}
 		}
 		else if (type == 3) {
-			// this->moveUp(list->entity);
-
-			// std::cout<<"moveUp1"<<std::endl;
-			// std::cout << list->entity->getYPos() <<std::endl;
-			// std::cout<<"moveUp2"<<std::endl;
-
 			if (list != NULL && list->entity->getYPos() <= 1) {
 				deleteEntity(list->entity);
 			}
 			else {
 				this->moveUp(list->entity);
+					
 			}
 		}
-		list = tmp;
+		list = this->_save;
 	}
-			// std::cout<<"finList"<<std::endl;
 
 	if (this->_nbEntities < this->_nbCols) {
-		int random = rand() % this->_nbCols - 1;
-		if (random % 10 == 1) {
-			Entity * newEnemy = new Enemy("enemy", random, 1, 1, 1, 5, 1);
+		if (rand() % 10 == 1) {
+			Entity * newEnemy = new Enemy("enemy", rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
 			this->addEntity(newEnemy);
 		}
 	}
@@ -265,10 +253,13 @@ bool						BoardGame::solveMove( Entity * entity1, Entity * entity2 ) {
 	bool tmp2 = entity2->touch(entity1);
 
 	if (tmp2 == true && entity2->getType() != 1) {
+		this->_save = this->_list;
 		deleteEntity(entity2);
 	}
 	if (tmp1 == true && entity1->getType() != 1) {
+		this->_save = this->_list;
 		deleteEntity(entity1);
+
 		return false;
 	}
 	return true;
@@ -372,9 +363,18 @@ void						BoardGame::getBoard( void ) const {
 		for (int j = 0; j < this->_nbCols; j++) {
 
 			if (this->_entities[i][j] != NULL) {
-				std::cout << "FOUND ARRAY i(y) : " << i << " j(x) " << j << " "<<this->_entities[i][j]->getXPos() << std::endl;
+				if (this->_entities[i][j]->getType() == 2)
+					std::cout << "M ";
+				else if (this->_entities[i][j]->getType() == 3)
+					std::cout << "* ";
+				else 
+					std::cout << "O ";
+			}
+			else {
+				std::cout << ". ";
 			}
 		}
+		std::cout << std::endl;
 	}
 }
 

@@ -52,8 +52,8 @@ Enemy &					Enemy::operator=( Enemy const & rhs ) {
 }
 
 bool					Enemy::touch( Entity * entity ) {
-	// 3 == SHOOT
-	if (entity->getType() == 3) {
+	// 3 == SHOOT, 2 == ENEMY
+	if (entity->getType() == 3 || entity->getType() == 2) {
 		this->setHitPoints(0);
 		return true;
 	}

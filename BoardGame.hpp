@@ -63,6 +63,8 @@ protected:
 	int						_nbCols;
 	t_list*					_list;
 
+	t_list*					_save;
+
 private:
 	BoardGame( void );
 

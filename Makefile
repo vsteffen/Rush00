@@ -6,14 +6,14 @@
 #    By: quroulon <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/26 13:12:08 by quroulon          #+#    #+#              #
-#    Updated: 2018/03/26 13:12:11 by quroulon         ###   ########.fr        #
+#    Updated: 2018/04/01 11:27:31 by quroulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_retro
 
 CC = clang++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 LDFLAGS = -lncurses
 
 INC = $(wildcard *.hpp)

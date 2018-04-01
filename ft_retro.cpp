@@ -17,6 +17,9 @@
 #include "Character.hpp"
 #include "Enemy.hpp"
 
+#include <fstream>
+
+
 #define DELAY 25000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
@@ -97,12 +100,16 @@ int				main ( void ) {
 	perso->setYPos(playerPosY);
 	board->addEntity(perso);
 
+	std::ofstream out("log.txt");
+    // std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+
 	while (key != 27) {
 		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 29, "Appuyez sur espace pour commencer ou sur échap pour quitter");
 		key = getch();
 
 		if (key == ' ') {
-	// 		mvprintw(getmaxy(win) - 15, 0, "CA MARCHE ");
+			// mvprintw(getmaxy(win) - 15, 0, "CA MARCHE ");
 			while(key != 27 && key != 10) {
 				print_top(win);
 				board->printBoard();

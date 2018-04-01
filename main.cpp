@@ -24,6 +24,16 @@ int					main2( void ) {
 
 	Entity *		perso = new Character("Link", 5, 5, 1, 1, 0, 5);
 	board->addEntity(perso);
+std::cout << "SECOND " << std::endl;
+	board->deleteEntity(perso);
+
+	Entity *		perso2 = new Character("test", 5, 5, 1, 1, 0, 5);
+	board->addEntity(perso2);
+	board->moveDown(perso2);
+
+	// Entity *		perso3 = new Character("test", 6, 5, 1, 1, 0, 5);
+	// board->addEntity(perso3);
+	// board->moveUp(perso3);
 
 	// Entity *		enemy1 = new Enemy("Enemy 1", 9, 9, 1, 1, 5, 1);
 	// Entity *		enemy2 = new Enemy("Enemy 2", 8, 8, 1, 1, 5, 1);
@@ -31,10 +41,12 @@ int					main2( void ) {
 	// board->addEntity(enemy1);
 	// board->addEntity(enemy2);
 	// board->addEntity(enemy3);
+std::cout << "PREMIER " << std::endl;
 
 	std::cout << *perso << std::endl;
 	board->getBoard();
 	board->getEntities();
+std::cout << "TROISIEME " << std::endl;
 
 	perso->setName("Zelda");
 	perso->setXPos(9);

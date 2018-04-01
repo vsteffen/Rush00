@@ -52,7 +52,7 @@ Shoot &					Shoot::operator=( Shoot const & rhs ) {
 }
 
 bool						Shoot::touch( Entity * entity ) {
-	// 2 == Enemy, 1 == Shoot
+	// 2 == Enemy, 1 == Character
 	if (entity->getType() == 2 || entity->getType() == 1) {
 		// this->setHitPoints(0);
 		return true;
