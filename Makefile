@@ -21,7 +21,7 @@ LIBS =
 
 # SRC = $(wildcard *.cpp)
 SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp \
-		ft_retro.cpp print.cpp
+		ft_retro.cpp print.cpp Shoot.cpp
 
 OBJ = $(SRC:%.cpp=%.o)
 

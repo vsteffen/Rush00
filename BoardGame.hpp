@@ -17,7 +17,7 @@
 #include "Entity.hpp"
 #include "Character.hpp"
 #include "Enemy.hpp"
-
+#include "Shoot.hpp"
 
 #include "ft_retro.hpp"
 
@@ -46,6 +46,7 @@ public:
 	bool					moveLeft( Entity * entity );
 	bool					moveRight( Entity * entity );
 	bool					solveMove( Entity * entity1, Entity * entity2 );
+	bool					shoot( Entity * entity );
 
 	bool					resolve( void );
 

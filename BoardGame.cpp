@@ -139,9 +139,6 @@ void						BoardGame::deleteEntity( Entity * entity ) {
 	t_list*			tmp = NULL;
 	t_list*			tmp2 = NULL;
 
-	// // 1 == Character
-	// if (entity->getType() == 1) {
-	// }
 
 	list = this->_list;
 	while (list != NULL) {
@@ -183,8 +180,11 @@ void						BoardGame::printBoard( void ) const {
 				if (this->_entities[i][j]->getType() == 1) {
 					mvprintw(i, j, "O");
 				}
-				else {
+				else if (this->_entities[i][j]->getType() == 2) {
 					mvprintw(i, j, "M");
+				}
+				else {
+					mvprintw(i, j, "*");
 				}
 			}
 		}
@@ -203,22 +203,45 @@ bool						BoardGame::resolve( void ) {
 	list = this->_list;
 	while (list != NULL) {
 		tmp = list->next;
-		if (list->entity->getType() == 1) {
+		int			type = list->entity->getType();
+		if (type == 1) {
 
 		}
-		else if (list->entity->getType() == 2) {
-			this->moveDown(list->entity);
+		else if (type == 2) {
+
+			// std::cout<<"moveDown1"<<std::endl;
+			// std::cout << list->entity->getYPos() <<std::endl;
+			// std::cout<<"moveDown2"<<std::endl;
+
 			// Si l'ennemi est tout en bas il disparait
-			if (list->entity->getYPos() >= this->_nbLines - 1) {
+			if (list != NULL && list->entity->getYPos() >= this->_nbLines - 1) {
 				deleteEntity(list->entity);
+			}
+			else {
+				this->moveDown(list->entity);
+			}
+		}
+		else if (type == 3) {
+			// this->moveUp(list->entity);
+
+			// std::cout<<"moveUp1"<<std::endl;
+			// std::cout << list->entity->getYPos() <<std::endl;
+			// std::cout<<"moveUp2"<<std::endl;
+
+			if (list != NULL && list->entity->getYPos() <= 1) {
+				deleteEntity(list->entity);
+			}
+			else {
+				this->moveUp(list->entity);
 			}
 		}
 		list = tmp;
 	}
+			// std::cout<<"finList"<<std::endl;
 
-	if (this->_nbEntities < (this->_nbCols / 3)) {
+	if (this->_nbEntities < this->_nbCols) {
 		int random = rand() % this->_nbCols - 1;
-		if (random % 5 == 1) {
+		if (random % 10 == 1) {
 			Entity * newEnemy = new Enemy("enemy", random, 1, 1, 1, 5, 1);
 			this->addEntity(newEnemy);
 		}
@@ -226,6 +249,11 @@ bool						BoardGame::resolve( void ) {
 	return true;
 }
 
+bool						BoardGame::shoot( Entity * entity ) {
+	Entity *				shoot = new Shoot(entity->getXPos(), entity->getYPos() - 1);
+	this->addEntity(shoot);
+	return true;
+}
 
 /* ************************************************************************** */
 /*                                   MOVE                                     */
@@ -236,12 +264,12 @@ bool						BoardGame::solveMove( Entity * entity1, Entity * entity2 ) {
 	bool tmp1 = entity1->touch(entity2);
 	bool tmp2 = entity2->touch(entity1);
 
+	if (tmp2 == true && entity2->getType() != 1) {
+		deleteEntity(entity2);
+	}
 	if (tmp1 == true && entity1->getType() != 1) {
 		deleteEntity(entity1);
 		return false;
-	}
-	if (tmp2 == true && entity2->getType() != 1) {
-		deleteEntity(entity2);
 	}
 	return true;
 }

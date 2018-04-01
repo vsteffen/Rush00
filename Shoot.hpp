@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Character.hpp                                      :+:      :+:    :+:   */
+/*   Shoot.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: quroulon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/31 14:08:55 by quroulon          #+#    #+#             */
-/*   Updated: 2018/03/31 14:08:56 by quroulon         ###   ########.fr       */
+/*   Created: 2018/04/01 04:03:48 by quroulon          #+#    #+#             */
+/*   Updated: 2018/04/01 04:03:50 by quroulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHARACTER_H
-# define CHARACTER_H
+#ifndef SHOOT_H
+# define SHOOT_H
 
 #include <iostream>
 #include "Entity.hpp"
 
-class Character : virtual public Entity {
+class Shoot : virtual public Entity {
 
 public:
-	Character( void );
-	Character( std::string, int, int, int, int, int, int );
-	Character( Character const & src );
-	virtual ~Character( void );
+	Shoot( void );
+	Shoot( int x, int y );
+	Shoot( std::string, int, int, int, int, int, int );
+	Shoot( Shoot const & src );
+	virtual ~Shoot( void );
 
-	Character &				operator=( Character const & rhs );
+	Shoot &				operator=( Shoot const & rhs );
 
 	int						getType( void ) const;
 
@@ -34,6 +35,6 @@ private:
 
 };
 
-// std::ostream &			operator<<( std::ostream & o, Character const & rhs );
+// std::ostream &			operator<<( std::ostream & o, Shoot const & rhs );
 
 #endif

@@ -17,7 +17,7 @@
 #include "Character.hpp"
 #include "Enemy.hpp"
 
-#define DELAY 31000
+#define DELAY 25000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
 
@@ -69,6 +69,8 @@ int			handle_key(BoardGame* board, int key, Entity* perso)
 		board->moveLeft(perso);
 	if (key == KEY_RIGHT)
 		board->moveRight(perso);
+	if (key == ' ')
+		board->shoot(perso);
 	// if (key == KEY_DOWN || key == KEY_RIGHT || key == KEY_LEFT || key == KEY_UP) {
 	// 	mvprintw(20, 0, "key = ");
 	// 	debug_int(20, 6, key);
@@ -96,7 +98,7 @@ int				main ( void ) {
 	board->addEntity(perso);
 
 	while (key != 27) {
-		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 30, "Appuyez sur espace pour commencer ou sur échap pour quitter");
+		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 29, "Appuyez sur espace pour commencer ou sur échap pour quitter");
 		key = getch();
 
 		if (key == ' ') {
