@@ -34,7 +34,7 @@ BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbC
 			int maxSize = 7, minSize = 2;
 			int randSize = rand() % (maxSize - minSize + 1) + minSize;
 
-			int maxY = this->_nbLines + randSize - 5;
+			int maxY = this->_nbLines - randSize - 5;
 			int minY = randSize + 5;
 			int randY = rand() % (maxY - minY + 1) + minY;
 
@@ -55,9 +55,7 @@ BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbC
 				}
 			}
 		}
-
 	}
-
 
     // Initialisation list
     this->_list = NULL;
