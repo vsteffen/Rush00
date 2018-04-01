@@ -12,5 +12,6 @@ char const		*getHSep(int win_width);
 void			debug_int(int height, int width, int integer);
 void			print_start(WINDOW *win);
 void			print_player(int playerPosY, int playerPosX);
+int				init_colors(void);
 
 #endif

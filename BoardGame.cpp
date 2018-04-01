@@ -225,16 +225,29 @@ void						BoardGame::printBoard( void ) const {
 		for (int j = 0; j < this->_nbCols; j++) {
 			if (this->_entities[i][j] != NULL) {
 				if (this->_entities[i][j]->getType() == 1) {
+					attron(COLOR_PAIR(4));
 					mvprintw(i, j, "O");
+					attron(COLOR_PAIR(1));
 				}
 				else if (this->_entities[i][j]->getType() % 10 == 2) {
-					if (this->_entities[i][j]->getType() == 2)
+					if (this->_entities[i][j]->getType() == 2) {
 						mvprintw(i, j, "M");
-					else
+					}
+					else {
 						mvprintw(i, j, "T");
+					}
 				}
 				else if (this->_entities[i][j]->getType() == 3) {
-					mvprintw(i, j, "*");
+					if (this->_entities[i][j]->getDirection() == true) {
+						attron(COLOR_PAIR(2));
+						mvprintw(i, j, "*");
+						attron(COLOR_PAIR(1));						
+					}
+					else {
+						attron(COLOR_PAIR(3));
+						mvprintw(i, j, "*");
+						attron(COLOR_PAIR(1));
+					}
 				}
 			}
 		}
@@ -402,7 +415,7 @@ bool						BoardGame::moveLeft( Entity * entity ) {
 	int				x = entity->getXPos();
 	int				y = entity->getYPos();
 
-	if (x - 1 <= 0) {
+	if (x - 1 < 0) {
 		return false;
 	}
 

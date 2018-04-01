@@ -28,6 +28,17 @@ void	debug_int(int height, int width, int integer) {
 	return ;
 }
 
+int			init_colors(void)
+{
+	start_color();
+	init_color(COLOR_YELLOW, 200, 200, 1000);
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	init_pair(2, COLOR_BLACK, COLOR_RED);
+	init_pair(3, COLOR_WHITE, COLOR_GREEN);
+	init_pair(4, COLOR_CYAN, COLOR_BLACK);
+	return (0);
+}
+
 void	print_start(WINDOW *win) {
 	int		y;
 	int		x;

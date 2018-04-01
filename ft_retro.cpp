@@ -36,16 +36,6 @@ void resizeHandler(int sig) {
 	exit(0);
 }
 
-int			init_colors(void)
-{
-	start_color();
-	init_color(COLOR_YELLOW, 200, 200, 1000);
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	init_pair(2, COLOR_BLACK, COLOR_BLACK);
-	init_pair(3, COLOR_WHITE, COLOR_RED);
-	return (0);
-}
-
 WINDOW		*init_ncurses(void)
 {
 	WINDOW		*win;
@@ -59,7 +49,6 @@ WINDOW		*init_ncurses(void)
 	mouseinterval(FALSE);
 	win = newwin(0, 0, 0, 0);
 	wbkgd(win, COLOR_PAIR(1));
-	// nodelay(stdscr, TRUE);
 	keypad(stdscr, TRUE);
 	noecho();
 	return (win);
@@ -78,12 +67,6 @@ int			handle_key(BoardGame* board, int key, Entity* perso)
 		board->moveRight(perso);
 	if (key == ' ')
 		board->shoot(perso);
-	// if (key == KEY_DOWN || key == KEY_RIGHT || key == KEY_LEFT || key == KEY_UP) {
-	// 	mvprintw(20, 0, "key = ");
-	// 	debug_int(20, 6, key);
-	// }
-	// mvprintw(getmaxy(win) - 2, 0, "key = %d", key);
-	// mvprintw(getmaxy(win) - 1, 0, "key = %d", KEY_DOWN);
 	return (0);
 }
 
@@ -95,46 +78,44 @@ void		print_top(WINDOW *win, BoardGame * board, Entity * perso) {
 
 	// debug_int(0, 7, board->getScore());
 
-	mvprintw(0, 14, "HP: %d", perso->getHitPoints());
+	mvprintw(0, 15, "HP: %d", perso->getHitPoints());
 
 
 	mvprintw(1, 0, getHSep(getmaxx(win)));
 }
 
+int						main ( void ) {
 
-int				main ( void ) {
-	WINDOW 		*win;
-	int			key = 0;
+	int					key = 0;
+	WINDOW 				*win;
 
 	signal (SIGWINCH, resizeHandler);
 
 	win = init_ncurses();
+	std::srand(time(NULL));
+	nodelay(stdscr, TRUE);
 
-	int			playerPosY = getmaxy(win) - 1, playerPosX = getmaxx(win) / 2;
-
-	BoardGame *		board = new BoardGame(getmaxy(win), getmaxx(win));
-	Entity *		perso = new Character();
+	int					playerPosY = getmaxy(win) - 1, playerPosX = getmaxx(win) / 2;
+	BoardGame *			board = new BoardGame(getmaxy(win), getmaxx(win));
+	Entity *			perso = new Character();
 
 	perso->setXPos(playerPosX);
 	perso->setYPos(playerPosY);
 	board->addEntity(perso);
-
-	// std::ofstream out("log.txt");
-    // std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-    // std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
 	while (key != 27) {
 		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 35, "Appuyez sur espace pour commencer ou sur échap pour quitter");
 		key = getch();
 
 		if (key == ' ') {
-			while(key != 27 && key != 10) {
+			while(key != 27) {
 				print_top(win, board, perso);
 				board->printBoard();
 				key = getch();
 				if (perso->getHitPoints() == 0) {
 					while (key != 27) {
-						mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 17, "Vous etes mort ! Appuyez sur échap.");
+						mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 23, "Vous etes mort ! Appuyez sur échap.");
+						mvprintw((getmaxy(win) / 2) + 2, (getmaxx(win) / 2) - 17, "Votre score est de %d", board->getScore());
 						key = getch();
 						wrefresh(win);
 						usleep(DELAY);
