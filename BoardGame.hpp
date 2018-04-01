@@ -50,16 +50,20 @@ public:
 
 	bool					resolve( void );
 
+	void					setScore( int score );
+
 	int						getNbEntities( void ) const;
 	int						getNbPlayers( void ) const;
 	Entity***				getEntities( void ) const;
 	int						getNbLines( void ) const;
 	int						getNbCols( void ) const;
 	t_list*					getList( void ) const;
+	int						getScore( void ) const;
 
 protected:
 	int						_nbEntities;
 	int						_nbPlayers;
+	int						_score;
 
 	Entity***				_entities;
 	int						_nbLines;
@@ -72,7 +76,5 @@ private:
 	BoardGame( void );
 
 };
-
-// std::ostream &			operator<<( std::ostream & o, BoardGame const & rhs );
 
 #endif

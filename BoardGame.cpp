@@ -32,6 +32,7 @@ BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbC
     this->_nbEntities = 0;
     this->_nbPlayers = 1;
     this->_save = NULL;
+    this->_score = 0;
 }
 
 BoardGame::BoardGame( BoardGame const & src ) {
@@ -73,11 +74,11 @@ BoardGame::~BoardGame( void ) {
 /* ************************************************************************** */
 
 BoardGame &					BoardGame::operator=( BoardGame const & rhs ) {
-
 	this->_nbEntities = rhs.getNbEntities();
 	this->_nbPlayers = rhs.getNbPlayers();
 	this->_nbLines = rhs.getNbLines();
 	this->_nbCols = rhs.getNbCols();
+	this->_score = rhs.getScore();
 	this->_save = NULL;
 
 	t_list *		current = this->_list;
@@ -130,7 +131,6 @@ BoardGame &					BoardGame::operator=( BoardGame const & rhs ) {
 			this->_entities[i][j] = rhs.getEntities()[i][j];
 		}
 	}
-
 
 	return *this;
 }
@@ -194,7 +194,6 @@ void						BoardGame::deleteEntity( Entity * entity ) {
 
 
 	while (current != NULL) {
-		std::cout << *(current->entity) << std::endl;
 		if (entity == current->entity) {
 
 			ptrNext = current->next;
@@ -344,6 +343,16 @@ bool						BoardGame::solveMove( Entity * entity1, Entity * entity2 ) {
 	bool tmp1 = entity1->touch(entity2);
 	bool tmp2 = entity2->touch(entity1);
 
+	// Si c'est un shoot du personnage qui tue un enemy on ajoute le score
+	if (tmp1 == true && entity1->getType() == 3 && entity1->get_direction() == true && entity2->getType() % 10 == 2 )
+	// if (tmp1 == true && entity1->getType() == 3 && entity2->getType() == 2) {
+		this->setScore(this->getScore() + entity2->getScore());
+	}
+	else if (tmp2 == true && entity2->getType() == 3 && entity2->get_direction() == true && entity1->getType() % 10 == 2) {
+	// else if (tmp2 == true && entity2->getType() == 3 && entity1->getType() == 2) {
+		this->setScore(this->getScore() + entity1->getScore());
+	}
+
 	if (tmp2 == true && entity2->getType() != 1) {
 		this->_save = this->_list;
 		deleteEntity(entity2);
@@ -442,6 +451,10 @@ bool						BoardGame::moveRight( Entity * entity ) {
 /*                                 SETTERS                                    */
 /* ************************************************************************** */
 
+void						BoardGame::setScore( int score ) {
+	this->_score = score;
+}
+
 /* ************************************************************************** */
 /*                                 GETTERS                                    */
 /* ************************************************************************** */
@@ -470,12 +483,11 @@ BoardGame::t_list*			BoardGame::getList( void ) const {
 	return this->_list;
 }
 
+int							BoardGame::getScore( void ) const {
+	return this->_score;
+}
+
 
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */
 /* ************************************************************************** */
-
-// std::ostream &			operator<<( std::ostream & o, BoardGame const & rhs ) {
-// 	o << rhs.getFoo();
-// 	return o;
-// }

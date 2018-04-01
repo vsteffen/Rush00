@@ -10,7 +10,7 @@
 
 char const		*getHSep(int win_width);
 void			debug_int(int height, int width, int integer);
-void			print_top(WINDOW *win);
+// void			print_top(WINDOW *win);
 void			print_start(WINDOW *win);
 void			print_player(int playerPosY, int playerPosX);
 
