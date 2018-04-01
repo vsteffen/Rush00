@@ -29,11 +29,10 @@ public:
 	int						getType( void ) const;
 
 	bool					touch( Entity * entity );
+	Entity *				clone( void ) const;
 
 private:
 
 };
-
-// std::ostream &			operator<<( std::ostream & o, Character const & rhs );
 
 #endif

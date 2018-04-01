@@ -51,7 +51,7 @@ Shoot &					Shoot::operator=( Shoot const & rhs ) {
 	return *this;
 }
 
-bool						Shoot::touch( Entity * entity ) {
+bool					Shoot::touch( Entity * entity ) {
 	// 2 == Enemy, 1 == Character
 	if (entity->getType() == 2 || entity->getType() == 1) {
 		// this->setHitPoints(0);
@@ -60,6 +60,9 @@ bool						Shoot::touch( Entity * entity ) {
 	return false;
 }
 
+Entity *				Shoot::clone( void ) const {
+	return new Shoot(*this);
+}
 
 /* ************************************************************************** */
 /*                                 SETTERS                                    */
@@ -76,9 +79,3 @@ int							Shoot::getType( void ) const {
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */
 /* ************************************************************************** */
-
-// std::ostream &			operator<<( std::ostream & o, Shoot const & rhs ) {
-// 	o << rhs.getName() << " at x pos " << rhs.getXPos() << " and y pos " << rhs.getYPos() <<
-// 	", HP : " << rhs.getHitPoints() << ", type : " << rhs.getType();
-// 	return o;
-// }

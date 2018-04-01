@@ -23,7 +23,7 @@ Character::Character( void ) : Entity( "Character", 0, 0, 1, 1, 0, 5 ) {
 
 Character::Character( std::string name, int x, int y, int xVel, int yVel, int score, int HP ) : 
 	Entity( name, x, y, xVel, yVel, score, HP ) {
-	// std::cout << "Character default constructor called" << std::endl;
+	std::cout << "Character default constructor called" << std::endl;
 }
 
 Character::Character( Character const & src ) : Entity( src ) {
@@ -46,9 +46,6 @@ Character::~Character( void ) {
 Character &					Character::operator=( Character const & rhs ) {
 	
 	this->Entity::operator=(rhs);
-	// std::cout << "Character assignation operator called" << std::endl;
-	// this->_name = rhs.getName();
-
 	return *this;
 }
 
@@ -67,6 +64,9 @@ bool						Character::touch( Entity * entity ) {
 	// }
 }
 
+Entity *				Character::clone( void ) const {
+	return new Character(*this);
+}
 
 /* ************************************************************************** */
 /*                                 SETTERS                                    */
@@ -83,9 +83,3 @@ int							Character::getType( void ) const {
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */
 /* ************************************************************************** */
-
-// std::ostream &			operator<<( std::ostream & o, Character const & rhs ) {
-// 	o << rhs.getName() << " at x pos " << rhs.getXPos() << " and y pos " << rhs.getYPos() <<
-// 	", HP : " << rhs.getHitPoints() << ", type : " << rhs.getType();
-// 	return o;
-// }

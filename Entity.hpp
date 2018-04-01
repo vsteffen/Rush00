@@ -34,6 +34,7 @@ public:
 	virtual int				getType( void ) const = 0;
 
 	virtual bool			touch( Entity * entity ) = 0;
+	virtual Entity *		clone( void ) const = 0;
 
 	void					setName( std::string );
 	virtual void			setXPos( int );
@@ -41,7 +42,7 @@ public:
 	virtual void			setXVelocity( int );
 	virtual void			setYVelocity( int );
 	virtual void			setHitPoints( int );
-	// virtual void			setScore( int );
+	virtual void			setScore( int );
 
 protected:
 	std::string				_name;

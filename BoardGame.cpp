@@ -21,11 +21,11 @@ BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbC
 	this->_entities = new Entity**[this->_nbLines];
 
 	for (int i = 0; i < this->_nbLines; i++) {
-        this->_entities[i] = new Entity*[this->_nbCols];
-        for (int j = 0; j < this->_nbCols; j++) {
-            this->_entities[i][j] = NULL;
-        }
-    }
+		this->_entities[i] = new Entity*[this->_nbCols];
+		for (int j = 0; j < this->_nbCols; j++) {
+			this->_entities[i][j] = NULL;
+		}
+	}
 
     // Initialisation list
     this->_list = NULL;
@@ -73,7 +73,64 @@ BoardGame::~BoardGame( void ) {
 /* ************************************************************************** */
 
 BoardGame &					BoardGame::operator=( BoardGame const & rhs ) {
-	( void ) rhs;
+
+	this->_nbEntities = rhs.getNbEntities();
+	this->_nbPlayers = rhs.getNbPlayers();
+	this->_nbLines = rhs.getNbLines();
+	this->_nbCols = rhs.getNbCols();
+	this->_save = NULL;
+
+	t_list *		current = this->_list;
+	t_list *		save = NULL;
+	while (current != NULL) {
+		save = current;
+		current = current->next;
+
+		delete save->entity;
+		delete save;
+	}
+
+	this->_list = NULL;
+	current = this->_list;
+	save = NULL;
+	
+	t_list *		rhsList = rhs.getList();
+
+	if (rhsList != NULL) {
+		current = new (t_list);
+		if (rhsList->entity->getType() == 1)
+		current->entity = rhsList->entity->clone();
+		current->next = NULL;
+	}
+	rhsList = rhsList->next;
+	this->_list = current;
+	save = current;
+
+	while (rhsList != NULL) {
+		
+		current = new (t_list);
+		current->entity = rhsList->entity->clone();
+		current->next = NULL;
+		save->next = current;
+
+		rhsList = rhsList->next;
+		save = current;
+
+	}
+
+	for (int i = 0; i < this->_nbLines; ++i) {
+		delete [] this->_entities[i];
+	}
+	delete [] this->_entities;
+
+	this->_entities = new Entity**[this->_nbLines];
+	for (int i = 0; i < this->_nbLines; i++) {
+		this->_entities[i] = new Entity*[this->_nbCols];
+		for (int j = 0; j < this->_nbCols; j++) {
+			this->_entities[i][j] = rhs.getEntities()[i][j];
+		}
+	}
+
 
 	return *this;
 }
@@ -174,7 +231,7 @@ void						BoardGame::printBoard( void ) const {
 				else if (this->_entities[i][j]->getType() == 2) {
 					mvprintw(i, j, "M");
 				}
-				else {
+				else if (this->_entities[i][j]->getType() == 3) {
 					mvprintw(i, j, "*");
 				}
 			}
@@ -358,35 +415,26 @@ int							BoardGame::getNbEntities( void ) const {
 	return this->_nbEntities;
 }
 
-void						BoardGame::getBoard( void ) const {
-	for (int i = 0; i < this->_nbLines; i++) {
-		for (int j = 0; j < this->_nbCols; j++) {
-
-			if (this->_entities[i][j] != NULL) {
-				if (this->_entities[i][j]->getType() == 2)
-					std::cout << "M ";
-				else if (this->_entities[i][j]->getType() == 3)
-					std::cout << "* ";
-				else 
-					std::cout << "O ";
-			}
-			else {
-				std::cout << ". ";
-			}
-		}
-		std::cout << std::endl;
-	}
+int							BoardGame::getNbPlayers( void ) const {
+	return this->_nbPlayers;
 }
 
-void						BoardGame::getEntities( void ) const {
-	t_list*			list;
-
-	list = this->_list;
-	while (list != NULL) {
-		std::cout << list->entity->getName() << std::endl;
-		list = list->next;
-	}
+Entity***					BoardGame::getEntities( void ) const {
+	return this->_entities;
 }
+
+int							BoardGame::getNbLines( void ) const {
+	return this->_nbLines;
+}
+
+int							BoardGame::getNbCols( void ) const {
+	return this->_nbCols;
+}
+
+BoardGame::t_list*			BoardGame::getList( void ) const {
+	return this->_list;
+}
+
 
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */

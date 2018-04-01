@@ -51,7 +51,6 @@ Entity &					Entity::operator=( Entity const & rhs ) {
 	this->_yVelocity = rhs.getYVelocity();
 	this->_score = rhs.getScore();
 	this->_hitPoints = rhs.getHitPoints();
-	// this->setType();
 
 	std::cout << "Entity assignation operator called" << std::endl;
 
@@ -84,6 +83,10 @@ void						Entity::setYVelocity( int yVel ) {
 
 void						Entity::setHitPoints( int HP ) {
 	this->_hitPoints = HP;
+}
+
+void						Entity::setScore( int score ) {
+	this->_score = score;
 }
 
 /* ************************************************************************** */

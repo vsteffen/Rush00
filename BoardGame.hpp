@@ -51,8 +51,11 @@ public:
 	bool					resolve( void );
 
 	int						getNbEntities( void ) const;
-	void					getBoard( void ) const;
-	void					getEntities( void ) const;
+	int						getNbPlayers( void ) const;
+	Entity***				getEntities( void ) const;
+	int						getNbLines( void ) const;
+	int						getNbCols( void ) const;
+	t_list*					getList( void ) const;
 
 protected:
 	int						_nbEntities;
