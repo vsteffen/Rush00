@@ -26,6 +26,10 @@ public:
 
 	Enemy &				operator=( Enemy const & rhs );
 
+	int					getType( void ) const;
+
+	bool				touch( Entity * entity );
+
 private:
 
 };

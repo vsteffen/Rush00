@@ -31,14 +31,17 @@ public:
 	virtual int				getYVelocity( void ) const;
 	virtual int				getScore( void ) const;
 	virtual int				getHitPoints( void ) const;
+	virtual int				getType( void ) const = 0;
+
+	virtual bool			touch( Entity * entity ) = 0;
 
 	void					setName( std::string );
 	virtual void			setXPos( int );
 	virtual void			setYPos( int );
 	virtual void			setXVelocity( int );
 	virtual void			setYVelocity( int );
+	virtual void			setHitPoints( int );
 	// virtual void			setScore( int );
-	// virtual void			setHitPoints( int );
 
 protected:
 	std::string				_name;
@@ -48,6 +51,7 @@ protected:
 	int						_yVelocity;
 	int						_score;
 	int						_hitPoints;
+	int						_type;
 
 private:
 	Entity( void );

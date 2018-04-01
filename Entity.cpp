@@ -17,17 +17,17 @@
 /* ************************************************************************** */
 
 Entity::Entity( void ) {
-	std::cout << "Entity default constructor called" << std::endl;
+	// std::cout << "Entity default constructor called" << std::endl;
 }
 
 Entity::Entity( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP ) : 
 	_name(name), _xPos(xPos), _yPos(yPos), _xVelocity(xVel), _yVelocity(yVel),
 	_score(score), _hitPoints(HP) {
-	std::cout << "Entity default constructor called" << std::endl;
+	// std::cout << "Entity default constructor called" << std::endl;
 }
 
 Entity::Entity( Entity const & src ) {
-	std::cout << "Entity copy constructor called" << std::endl;
+	// std::cout << "Entity copy constructor called" << std::endl;
 	*this = src;
 }
 
@@ -36,7 +36,7 @@ Entity::Entity( Entity const & src ) {
 /* ************************************************************************** */
 
 Entity::~Entity( void ) {
-	std::cout << "Entity destructor called" << std::endl;
+	// std::cout << "Entity destructor called" << std::endl;
 }
 
 /* ************************************************************************** */
@@ -51,6 +51,7 @@ Entity &					Entity::operator=( Entity const & rhs ) {
 	this->_yVelocity = rhs.getYVelocity();
 	this->_score = rhs.getScore();
 	this->_hitPoints = rhs.getHitPoints();
+	// this->setType();
 
 	std::cout << "Entity assignation operator called" << std::endl;
 
@@ -79,6 +80,10 @@ void						Entity::setXVelocity( int xVel ) {
 
 void						Entity::setYVelocity( int yVel ) {
 	this->_yVelocity = yVel;
+}
+
+void						Entity::setHitPoints( int HP ) {
+	this->_hitPoints = HP;
 }
 
 /* ************************************************************************** */
@@ -119,6 +124,6 @@ int							Entity::getHitPoints( void ) const {
 
 std::ostream &				operator<<( std::ostream & o, Entity const & rhs ) {
 	o << rhs.getName() << " at x pos " << rhs.getXPos() << " and y pos " << rhs.getYPos() <<
-	", HP : " << rhs.getHitPoints();
+	", HP : " << rhs.getHitPoints() << ", type : " << rhs.getType();
 	return o;
 }

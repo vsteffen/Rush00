@@ -16,10 +16,10 @@
 /*                                CONSTRUCTORS                                */
 /* ************************************************************************** */
 
-BoardGame::BoardGame( void ) : _nbLines(10), _nbCols(10) {
+BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbCols) {
 	std::cout << "BoardGame default constructor called" << std::endl;
 
-	// Initialisation [][] entitites
+	// Initialisation [][] entities
 	this->_entities = new Entity**[this->_nbLines];
 
 	for (int i = 0; i < this->_nbLines; ++i) {
@@ -31,6 +31,8 @@ BoardGame::BoardGame( void ) : _nbLines(10), _nbCols(10) {
 
     // Initialisation list
     this->_list = NULL;
+    this->_nbEntities = 0;
+    this->_nbPlayers = 1;
 }
 
 BoardGame::BoardGame( BoardGame const & src ) {
@@ -59,8 +61,6 @@ BoardGame::~BoardGame( void ) {
 		tmp = list;
 		list = tmp->next;
 
-		std::cout << "ICI " << tmp->entity->getName() << std::endl;
-
 		delete tmp->entity;
 		delete tmp;
 	}
@@ -70,9 +70,6 @@ BoardGame::~BoardGame( void ) {
 /* ************************************************************************** */
 /*                                 ATTRIBUTES                                 */
 /* ************************************************************************** */
-
-int							BoardGame::_nbEntities = 0;
-int							BoardGame::_nbPlayers = 1;
 
 /* ************************************************************************** */
 /*                             MEMBERS FUNCTIONS                              */
@@ -122,7 +119,6 @@ bool						BoardGame::push( Entity* entity ) {
 		list->next = newList;
 	}
 	else {
-		std::cout << " NEW LIST " << std::endl;
 		this->_list = newList;
 	}
 
@@ -143,13 +139,18 @@ void						BoardGame::deleteEntity( Entity * entity ) {
 	t_list*			tmp = NULL;
 	t_list*			tmp2 = NULL;
 
+	// // 1 == Character
+	// if (entity->getType() == 1) {
+	// }
+
 	list = this->_list;
 	while (list != NULL) {
 		if (entity == list->entity) {
 
-			std::cout << "FOUND DELETE " << *(list->entity) << std::endl;
+			// std::cout << "FOUND DELETE " << *(list->entity) << std::endl;
 			tmp2 = list->next;
 			this->_entities[list->entity->getYPos()][list->entity->getXPos()] = NULL;
+			this->_nbEntities--;
 
 			delete list->entity;
 			delete list;
@@ -166,40 +167,165 @@ void						BoardGame::deleteEntity( Entity * entity ) {
 		tmp = list;
 		list = list->next;
 	}
-	std::cout << "Entity not found" << std::endl;
+	// std::cout << "Entity not found" << std::endl;
 
 }
+
+/* ************************************************************************** */
+/*                                   PRINT                                    */
+/* ************************************************************************** */
+
+
+void						BoardGame::printBoard( void ) const {
+	for (int i = 0; i < this->_nbLines; i++) {
+		for (int j = 0; j < this->_nbCols; j++) {
+			if (this->_entities[i][j] != NULL) {
+				if (this->_entities[i][j]->getType() == 1) {
+					mvprintw(i, j, "O");
+				}
+				else {
+					mvprintw(i, j, "M");
+				}
+			}
+		}
+	}
+}
+
+/* ************************************************************************** */
+/*                                 RESOLVE                                    */
+/* ************************************************************************** */
+
+
+bool						BoardGame::resolve( void ) {
+	t_list *				list;
+	t_list *				tmp;
+
+	list = this->_list;
+	while (list != NULL) {
+		tmp = list->next;
+		if (list->entity->getType() == 1) {
+
+		}
+		else if (list->entity->getType() == 2) {
+			this->moveDown(list->entity);
+			// Si l'ennemi est tout en bas il disparait
+			if (list->entity->getYPos() >= this->_nbLines - 1) {
+				deleteEntity(list->entity);
+			}
+		}
+		list = tmp;
+	}
+
+	if (this->_nbEntities < (this->_nbCols / 3)) {
+		int random = rand() % this->_nbCols - 1;
+		if (random % 5 == 1) {
+			Entity * newEnemy = new Enemy("enemy", random, 1, 1, 1, 5, 1);
+			this->addEntity(newEnemy);
+		}
+	}
+	return true;
+}
+
 
 /* ************************************************************************** */
 /*                                   MOVE                                     */
 /* ************************************************************************** */
 
-bool						BoardGame::moveUp( Entity * perso ) {
-	int				x = perso->getXPos();
-	int				y = perso->getYPos();
+bool						BoardGame::solveMove( Entity * entity1, Entity * entity2 ) {
 
-	if (y - 1 < 0) {
+	bool tmp1 = entity1->touch(entity2);
+	bool tmp2 = entity2->touch(entity1);
+
+	if (tmp1 == true && entity1->getType() != 1) {
+		deleteEntity(entity1);
 		return false;
 	}
+	if (tmp2 == true && entity2->getType() != 1) {
+		deleteEntity(entity2);
+	}
+	return true;
+}
+
+bool						BoardGame::moveUp( Entity * entity ) {
+	int				x = entity->getXPos();
+	int				y = entity->getYPos();
+
+	if (y - 1 <= 0) {
+		return false;
+	}
+
+	if (this->_entities[y - 1][x] != NULL) {
+		if (solveMove(this->_entities[y][x], this->_entities[y - 1][x]) == false)
+			return false;
+	}
+
 	this->_entities[y - 1][x] = this->_entities[y][x];
 	this->_entities[y][x] = NULL;
 
-	perso->setYPos(y - 1);
+	entity->setYPos(y - 1);
 	return true;
 
 }
 
-// bool						BoardGame::moveDown( Entity * entity ) {
+bool						BoardGame::moveDown( Entity * entity ) {
+	int				x = entity->getXPos();
+	int				y = entity->getYPos();
 
-// }
+	if (y + 1 >= this->_nbLines) {
+		return false;
+	}
 
-// bool						BoardGame::moveLeft( Entity * entity ) {
+	if (this->_entities[y + 1][x] != NULL) {
+		if (solveMove(this->_entities[y][x], this->_entities[y + 1][x]) == false)
+			return false;
+	}
 
-// }
+	this->_entities[y + 1][x] = this->_entities[y][x];
+	this->_entities[y][x] = NULL;
 
-// bool						BoardGame::moveRight( Entity * entity ) {
+	entity->setYPos(y + 1);
+	return true;
+}
 
-// }
+bool						BoardGame::moveLeft( Entity * entity ) {
+	int				x = entity->getXPos();
+	int				y = entity->getYPos();
+
+	if (x - 1 <= 0) {
+		return false;
+	}
+
+	if (this->_entities[y][x - 1] != NULL) {
+		if (solveMove(this->_entities[y][x], this->_entities[y][x - 1]) == false)
+			return false;
+	}
+
+	this->_entities[y][x - 1] = this->_entities[y][x];
+	this->_entities[y][x] = NULL;
+
+	entity->setXPos(x - 1);
+	return true;
+}
+
+bool						BoardGame::moveRight( Entity * entity ) {
+	int				x = entity->getXPos();
+	int				y = entity->getYPos();
+
+	if (x + 1 >= this->_nbCols) {
+		return false;
+	}
+
+	if (this->_entities[y][x + 1] != NULL) {
+		if (solveMove(this->_entities[y][x], this->_entities[y][x + 1]) == false)
+			return false;
+	}
+
+	this->_entities[y][x + 1] = this->_entities[y][x];
+	this->_entities[y][x] = NULL;
+
+	entity->setXPos(x + 1);
+	return true;
+}
 
 /* ************************************************************************** */
 /*                                 SETTERS                                    */
@@ -214,8 +340,8 @@ int							BoardGame::getNbEntities( void ) const {
 }
 
 void						BoardGame::getBoard( void ) const {
-	for (int i = 0; i < this->_nbLines; ++i) {
-		for (int j = 0; j < this->_nbCols; ++j) {
+	for (int i = 0; i < this->_nbLines; i++) {
+		for (int j = 0; j < this->_nbCols; j++) {
 
 			if (this->_entities[i][j] != NULL) {
 				std::cout << "FOUND ARRAY i(y) : " << i << " j(x) " << j << " "<<this->_entities[i][j]->getXPos() << std::endl;

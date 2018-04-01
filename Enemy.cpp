@@ -18,16 +18,16 @@
 
 /** ( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP ) **/
 Enemy::Enemy( void ) : Entity( "Enemy", 0, 0, 1, 1, 5, 1 ) {
-	std::cout << "Enemy default constructor called" << std::endl;
+	// std::cout << "Enemy default constructor called" << std::endl;
 }
 
 Enemy::Enemy( std::string name, int x, int y, int xVel, int yVel, int score, int HP ) :
 	Entity(name, x, y, xVel, yVel, score, HP) {
-	std::cout << "Enemy default constructor called" << std::endl;
+	// std::cout << "Enemy default constructor called" << std::endl;
 }
 
 Enemy::Enemy( Enemy const & src ) : Entity( src ) {
-	std::cout << "Enemy copy constructor called" << std::endl;
+	// std::cout << "Enemy copy constructor called" << std::endl;
 	*this = src;
 }
 
@@ -36,7 +36,7 @@ Enemy::Enemy( Enemy const & src ) : Entity( src ) {
 /* ************************************************************************** */
 
 Enemy::~Enemy( void ) {
-	std::cout << "Enemy destructor called" << std::endl;
+	// std::cout << "Enemy destructor called" << std::endl;
 }
 
 /* ************************************************************************** */
@@ -46,9 +46,18 @@ Enemy::~Enemy( void ) {
 Enemy &					Enemy::operator=( Enemy const & rhs ) {
 
 	this->Entity::operator=(rhs);
-	std::cout << "Enemy assignation operator called" << std::endl;
+	// std::cout << "Enemy assignation operator called" << std::endl;
 
 	return *this;
+}
+
+bool					Enemy::touch( Entity * entity ) {
+	// 3 == SHOOT
+	if (entity->getType() == 3) {
+		this->setHitPoints(0);
+		return true;
+	}
+	return false;
 }
 
 /* ************************************************************************** */
@@ -58,6 +67,10 @@ Enemy &					Enemy::operator=( Enemy const & rhs ) {
 /* ************************************************************************** */
 /*                                 GETTERS                                    */
 /* ************************************************************************** */
+
+int						Enemy::getType( void ) const {
+	return 2;	
+}
 
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */

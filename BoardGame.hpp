@@ -16,6 +16,10 @@
 #include <iostream>
 #include "Entity.hpp"
 #include "Character.hpp"
+#include "Enemy.hpp"
+
+
+#include "ft_retro.hpp"
 
 class BoardGame {
 
@@ -25,7 +29,7 @@ public:
 		struct s_list*	next;
 	}					t_list;
 
-	BoardGame( void );
+	BoardGame( int nbLines, int nbCols );
 	BoardGame( BoardGame const & src );
 	virtual ~BoardGame( void );
 
@@ -35,18 +39,23 @@ public:
 	void					deleteEntity( int x, int y );
 	void					deleteEntity( Entity * entity );
 
-	bool					moveUp( Entity * perso );
-	// bool					moveDown( Entity * entity );
-	// bool					moveLeft( Entity * entity );
-	// bool					moveRight( Entity * entity );
+	void					printBoard( void ) const;
+
+	bool					moveUp( Entity * entity );
+	bool					moveDown( Entity * entity );
+	bool					moveLeft( Entity * entity );
+	bool					moveRight( Entity * entity );
+	bool					solveMove( Entity * entity1, Entity * entity2 );
+
+	bool					resolve( void );
 
 	int						getNbEntities( void ) const;
 	void					getBoard( void ) const;
 	void					getEntities( void ) const;
 
 protected:
-	static int				_nbEntities;
-	static int				_nbPlayers;
+	int						_nbEntities;
+	int						_nbPlayers;
 
 	Entity***				_entities;
 	int						_nbLines;
@@ -54,6 +63,7 @@ protected:
 	t_list*					_list;
 
 private:
+	BoardGame( void );
 
 };
 

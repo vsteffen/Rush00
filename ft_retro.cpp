@@ -12,7 +12,12 @@
 
 #include "ft_retro.hpp"
 
-#define DELAY 8000
+#include "BoardGame.hpp"
+#include "Entity.hpp"
+#include "Character.hpp"
+#include "Enemy.hpp"
+
+#define DELAY 31000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
 
@@ -53,24 +58,23 @@ WINDOW		*init_ncurses(void)
 	return (win);
 }
 
-int			handle_key(WINDOW *win, int *playerPosY, int *playerPosX, int key)
+int			handle_key(BoardGame* board, int key, Entity* perso)
 {
-	// if (key == 27)
-		// return (1);
-	if (key == KEY_UP && *playerPosY > 2)
-		(*playerPosY)--;
-	if (key == KEY_DOWN && *playerPosY < getmaxy(win) - 1)
-		(*playerPosY)++;
-	if (key == KEY_LEFT && *playerPosX > 0)
-		(*playerPosX)--;
-	if (key == KEY_RIGHT && *playerPosX < getmaxx(win) - 1)
-		(*playerPosX)++;
-	if (key == KEY_DOWN || key == KEY_RIGHT || key == KEY_LEFT || key == KEY_UP) {
-		mvprintw(20, 0, "key = ");
-		debug_int(20, 6, key);
-	}
-	mvprintw(getmaxy(win) - 2, 0, "key = %d", key);
-	mvprintw(getmaxy(win) - 1, 0, "key = %d", KEY_DOWN);
+
+	if (key == KEY_UP)
+		board->moveUp(perso);
+	if (key == KEY_DOWN)
+		board->moveDown(perso);
+	if (key == KEY_LEFT)
+		board->moveLeft(perso);
+	if (key == KEY_RIGHT)
+		board->moveRight(perso);
+	// if (key == KEY_DOWN || key == KEY_RIGHT || key == KEY_LEFT || key == KEY_UP) {
+	// 	mvprintw(20, 0, "key = ");
+	// 	debug_int(20, 6, key);
+	// }
+	// mvprintw(getmaxy(win) - 2, 0, "key = %d", key);
+	// mvprintw(getmaxy(win) - 1, 0, "key = %d", KEY_DOWN);
 	return (0);
 }
 
@@ -84,16 +88,48 @@ int				main ( void ) {
 
 	int			playerPosY = getmaxy(win) - 1, playerPosX = getmaxx(win) / 2;
 
-	while(key != 27) {
-		print_top(win);
-		print_player(playerPosY, playerPosX);
+	BoardGame *		board = new BoardGame(getmaxy(win), getmaxx(win));
+	Entity *		perso = new Character();
+
+	perso->setXPos(playerPosX);
+	perso->setYPos(playerPosY);
+	board->addEntity(perso);
+
+	while (key != 27) {
+		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 30, "Appuyez sur espace pour commencer ou sur échap pour quitter");
 		key = getch();
-		if (handle_key(win, &playerPosY, &playerPosX, key))
-			break ;
+
+		if (key == ' ') {
+	// 		mvprintw(getmaxy(win) - 15, 0, "CA MARCHE ");
+			while(key != 27 && key != 10) {
+				print_top(win);
+				board->printBoard();
+				key = getch();
+				if (perso->getHitPoints() == 0) {
+					while (key != 27) {
+						mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 17, "Vous etes mort ! Appuyez sur échap.");
+						key = getch();
+						wrefresh(win);
+						usleep(DELAY);
+						clear();
+					}
+					break ;
+				}
+				if (handle_key(board, key, perso))
+					break ;
+				board->resolve();
+				// score--;
+				wrefresh(win);
+				usleep(DELAY);
+				clear();
+			}	
+		}
 		wrefresh(win);
 		usleep(DELAY);
 		clear();
 	}
+	
 	endwin();
+	delete board;
 	return 0;
 }

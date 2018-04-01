@@ -26,10 +26,14 @@ public:
 
 	Character &				operator=( Character const & rhs );
 
+	int						getType( void ) const;
+
+	bool					touch( Entity * entity );
+
 private:
 
 };
 
-// std::ostream &			operator<<( std::ostream & o, Temp const & rhs );
+// std::ostream &			operator<<( std::ostream & o, Character const & rhs );
 
 #endif

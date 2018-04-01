@@ -18,16 +18,16 @@
 
 /** ( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP ) **/
 Character::Character( void ) : Entity( "Character", 0, 0, 1, 1, 0, 5 ) {
-	std::cout << "Character default constructor called" << std::endl;
+	// std::cout << "Character default constructor called" << std::endl;
 }
 
 Character::Character( std::string name, int x, int y, int xVel, int yVel, int score, int HP ) : 
 	Entity( name, x, y, xVel, yVel, score, HP ) {
-	std::cout << "Character default constructor called" << std::endl;
+	// std::cout << "Character default constructor called" << std::endl;
 }
 
 Character::Character( Character const & src ) : Entity( src ) {
-	std::cout << "Character copy constructor called" << std::endl;
+	// std::cout << "Character copy constructor called" << std::endl;
 	*this = src;
 }
 
@@ -36,7 +36,7 @@ Character::Character( Character const & src ) : Entity( src ) {
 /* ************************************************************************** */
 
 Character::~Character( void ) {
-	std::cout << "Character destructor called" << std::endl;
+	// std::cout << "Character destructor called" << std::endl;
 }
 
 /* ************************************************************************** */
@@ -46,11 +46,27 @@ Character::~Character( void ) {
 Character &					Character::operator=( Character const & rhs ) {
 	
 	this->Entity::operator=(rhs);
-	std::cout << "Character assignation operator called" << std::endl;
+	// std::cout << "Character assignation operator called" << std::endl;
 	// this->_name = rhs.getName();
 
 	return *this;
 }
+
+bool						Character::touch( Entity * entity ) {
+	// 2 == Enemy
+	if (entity->getType() == 2) {
+		this->setHitPoints(0);
+		return true;
+	}
+	return false;
+	// if (entity->getType() == Enemy::getType()) {
+	// 	entity->setHitPoints(0);
+	// }
+	// else if (entity->getType() == Shoot::getType()) {
+	// 	entity->setHitPoints(this->getHitPoints() - damage)
+	// }
+}
+
 
 /* ************************************************************************** */
 /*                                 SETTERS                                    */
@@ -60,11 +76,16 @@ Character &					Character::operator=( Character const & rhs ) {
 /*                                 GETTERS                                    */
 /* ************************************************************************** */
 
+int							Character::getType( void ) const {
+	return 1;
+}
+
 /* ************************************************************************** */
 /*                           NON MEMBERS FUNCTIONS                            */
 /* ************************************************************************** */
 
-// std::ostream &			operator<<( std::ostream & o, Entity const & rhs ) {
-// 	o << rhs.getFoo();
+// std::ostream &			operator<<( std::ostream & o, Character const & rhs ) {
+// 	o << rhs.getName() << " at x pos " << rhs.getXPos() << " and y pos " << rhs.getYPos() <<
+// 	", HP : " << rhs.getHitPoints() << ", type : " << rhs.getType();
 // 	return o;
 // }
