@@ -17,7 +17,7 @@
 #include "Enemy.hpp"
 #include "BoardGame.hpp"
 
-#define DELAY 10000
+#define DELAY 25000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
 
