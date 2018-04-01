@@ -18,7 +18,7 @@
 class Entity {
 
 public:
-	Entity( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP );
+	Entity( std::string name, int type, int xPos, int yPos, int xVel, int yVel, int score, int HP );
 	Entity( Entity const & src );
 	virtual ~Entity( void );
 
@@ -32,6 +32,7 @@ public:
 	virtual int				getScore( void ) const;
 	virtual int				getHitPoints( void ) const;
 	virtual int				getType( void ) const = 0;
+	bool					getDirection( void ) const;
 
 	virtual bool			touch( Entity * entity ) = 0;
 	virtual Entity *		clone( void ) const = 0;
@@ -42,21 +43,23 @@ public:
 	virtual void			setXVelocity( int );
 	virtual void			setYVelocity( int );
 	virtual void			setHitPoints( int );
-	virtual void			setScore( int );
+ 	virtual void			setScore( int );
+	virtual void			setType( int );
 
 protected:
 	std::string				_name;
+	int						_type;
 	int						_xPos;
 	int						_yPos;
 	int						_xVelocity;
 	int						_yVelocity;
 	int						_score;
+	bool					_direction;
 	int						_hitPoints;
-	int						_type;
 
 private:
 	Entity( void );
-	
+
 };
 
 std::ostream &			operator<<( std::ostream & o, Entity const & rhs );

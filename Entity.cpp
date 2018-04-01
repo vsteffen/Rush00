@@ -20,8 +20,8 @@ Entity::Entity( void ) {
 	// std::cout << "Entity default constructor called" << std::endl;
 }
 
-Entity::Entity( std::string name, int xPos, int yPos, int xVel, int yVel, int score, int HP ) : 
-	_name(name), _xPos(xPos), _yPos(yPos), _xVelocity(xVel), _yVelocity(yVel),
+Entity::Entity( std::string name, int type, int xPos, int yPos, int xVel, int yVel, int score, int HP ) :
+	_name(name), _type(type), _xPos(xPos), _yPos(yPos), _xVelocity(xVel), _yVelocity(yVel),
 	_score(score), _hitPoints(HP) {
 	// std::cout << "Entity default constructor called" << std::endl;
 }
@@ -89,6 +89,10 @@ void						Entity::setScore( int score ) {
 	this->_score = score;
 }
 
+void						Entity::setType( int type ) {
+	this->_type = type;
+}
+
 /* ************************************************************************** */
 /*                                 GETTERS                                    */
 /* ************************************************************************** */
@@ -106,7 +110,7 @@ int							Entity::getYPos( void ) const {
 }
 
 int							Entity::getXVelocity( void ) const {
-	return this->_xVelocity;	
+	return this->_xVelocity;
 }
 
 int							Entity::getYVelocity( void ) const {
@@ -119,6 +123,10 @@ int							Entity::getScore( void ) const {
 
 int							Entity::getHitPoints( void ) const {
 	return this->_hitPoints;
+}
+
+bool 						Entity::getDirection( void ) const {
+	return this->_direction;
 }
 
 /* ************************************************************************** */

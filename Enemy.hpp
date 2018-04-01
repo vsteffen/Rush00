@@ -20,7 +20,7 @@ class Enemy : virtual public Entity {
 
 public:
 	Enemy( void );
-	Enemy( std::string, int, int, int, int, int, int );
+	Enemy( std::string, int, int, int, int, int, int, int );
 	Enemy( Enemy const & src );
 	virtual ~Enemy( void );
 
@@ -30,8 +30,6 @@ public:
 
 	bool				touch( Entity * entity );
 	Entity *			clone( void ) const;
-
-private:
 
 };
 

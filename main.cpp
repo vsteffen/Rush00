@@ -22,11 +22,11 @@ int					main2( void ) {
 
 	BoardGame *		board = new BoardGame(20, 20);
 
-	Entity *		perso = new Character("Link", 5, 5, 1, 1, 0, 5);
+	Entity *		perso = new Character("Link", 1, 5, 5, 1, 1, 0, 5);
 	board->addEntity(perso);
 	board->moveLeft(perso);
 
-	Entity *		perso2 = new Character("test", 15, 5, 1, 1, 0, 5);
+	Entity *		perso2 = new Character("test", 1, 15, 5, 1, 1, 0, 5);
 	board->addEntity(perso2);
 	board->moveDown(perso2);
 
@@ -71,4 +71,3 @@ int					main2( void ) {
 
 	return 0;
 }
-
