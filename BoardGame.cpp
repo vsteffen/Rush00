@@ -27,6 +27,38 @@ BoardGame::BoardGame( int nbLines, int nbCols ) : _nbLines(nbLines), _nbCols(nbC
 		}
 	}
 
+	// set asteroids
+	if (this->_nbLines > 30 && this->_nbCols > 30) {
+		int maxAsteroid = 5;
+		while ((rand() % 2 == 1 || rand() % 2 == 1) && maxAsteroid-- >= 0) {
+			int maxSize = 7, minSize = 2;
+			int randSize = rand() % (maxSize - minSize + 1) + minSize;
+
+			int maxY = this->_nbLines + randSize - 5;
+			int minY = randSize + 5;
+			int randY = rand() % (maxY - minY + 1) + minY;
+
+			int maxX = this->_nbCols - randSize - 4;
+			int minX = randSize + 3;
+			int randX = rand() % (maxX - minX + 1) + minX;
+
+			for (int y = randY; y < randY + randSize; y++) {
+				if (y >= this->_nbLines - 1 || y < 0)
+					continue ;
+				for (int x = randX; x < randX + randSize; x++) {
+					if (x >= this->_nbCols - 1 || x < 0)
+						continue ;
+					Entity * asteroid = new Enemy("asteroid", 32, y, x, 1, 1, 10, 1);
+					if (this->_entities[y][x] != NULL)
+						delete 	this->_entities[y][x];
+					this->_entities[y][x] = asteroid;
+				}
+			}
+		}
+
+	}
+
+
     // Initialisation list
     this->_list = NULL;
     this->_nbEntities = 0;
@@ -146,11 +178,13 @@ bool						BoardGame::addEntity( Entity * entity ) {
 	int			y = (entity)->getYPos();
 
 	if (y > this->_nbLines || y < 0 || x > this->_nbCols || x < 0) {
+		delete entity;
 		return false;
 	}
 
-	while (this->_entities[y][x] != NULL) {
-		x++;
+	if (this->_entities[y][x] != NULL) {
+		delete entity;
+		return false;
 	}
 
 	this->_nbEntities++;
@@ -233,15 +267,17 @@ void						BoardGame::printBoard( void ) const {
 					if (this->_entities[i][j]->getType() == 2) {
 						mvprintw(i, j, "M");
 					}
-					else {
-						mvprintw(i, j, "T");
+					else if (this->_entities[i][j]->getType() == 32) {
+						mvprintw(i, j, "+");
 					}
+					else
+						mvprintw(i, j, "T");
 				}
 				else if (this->_entities[i][j]->getType() == 3) {
 					if (this->_entities[i][j]->getDirection() == true) {
 						attron(COLOR_PAIR(8));
 						mvprintw(i, j, "*");
-						attron(COLOR_PAIR(6));						
+						attron(COLOR_PAIR(6));
 					}
 					else {
 						attron(COLOR_PAIR(7));
