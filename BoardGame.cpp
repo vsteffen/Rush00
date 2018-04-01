@@ -274,7 +274,7 @@ bool						BoardGame::resolve( void ) {
 			else if (rand() % 10 == 0) {
 				this->moveLeft(list->entity);
 			}
-			else if (list->entity->getType() == 12 && rand() % 15 == 1) {
+			else if (list->entity->getType() == 12 && rand() % 30 == 1) {
 				this->shoot(list->entity);
 			}
 		}
@@ -302,7 +302,7 @@ bool						BoardGame::resolve( void ) {
 	if (this->_nbEntities < this->_nbCols) {
 		if (rand() % 10 == 1) {
 			if (rand() % 5 == 1) {
-				Entity * newEnemy = new Enemy("enemy", 12, rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
+				Entity * newEnemy = new Enemy("invader", 12, rand() % this->_nbCols - 1, 1, 1, 1, 10, 1);
 				this->addEntity(newEnemy);
 			}
 			else {
@@ -312,13 +312,6 @@ bool						BoardGame::resolve( void ) {
 		}
 	}
 
-
-	// enemy shoot
-	// list = this->_list;
-	// while (list) {
-    //
-	// 	list = list->next;
-	// }
 	return true;
 }
 
@@ -344,12 +337,10 @@ bool						BoardGame::solveMove( Entity * entity1, Entity * entity2 ) {
 	bool tmp2 = entity2->touch(entity1);
 
 	// Si c'est un shoot du personnage qui tue un enemy on ajoute le score
-	if (tmp1 == true && entity1->getType() == 3 && entity1->get_direction() == true && entity2->getType() % 10 == 2 )
-	// if (tmp1 == true && entity1->getType() == 3 && entity2->getType() == 2) {
+	if (tmp1 == true && entity1->getType() == 3 && entity1->getDirection() == true && entity2->getType() % 10 == 2 ) {
 		this->setScore(this->getScore() + entity2->getScore());
 	}
-	else if (tmp2 == true && entity2->getType() == 3 && entity2->get_direction() == true && entity1->getType() % 10 == 2) {
-	// else if (tmp2 == true && entity2->getType() == 3 && entity1->getType() == 2) {
+	else if (tmp2 == true && entity2->getType() == 3 && entity2->getDirection() == true && entity1->getType() % 10 == 2) {
 		this->setScore(this->getScore() + entity1->getScore());
 	}
 

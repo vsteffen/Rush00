@@ -26,7 +26,7 @@
 
 #include <fstream>
 
-#define DELAY 30000
+#define DELAY 25000
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
 
@@ -99,7 +99,6 @@ void		print_top(WINDOW *win, BoardGame * board) {
 	mvprintw(0, 0, "SCORE: ");
 
 	debug_int(0, 7, board->getScore());
-	// debug_int(0, 7, score++);
 
 	mvprintw(1, 0, getHSep(getmaxx(win)));
 }
