@@ -76,8 +76,6 @@ void		print_top(WINDOW *win, BoardGame * board, Entity * perso) {
 	str += getmaxy(win);
 	mvprintw(0, 0, "SCORE: %d", board->getScore());
 
-	// debug_int(0, 7, board->getScore());
-
 	mvprintw(0, 15, "HP: %d", perso->getHitPoints());
 
 

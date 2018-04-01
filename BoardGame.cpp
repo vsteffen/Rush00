@@ -239,12 +239,12 @@ void						BoardGame::printBoard( void ) const {
 				}
 				else if (this->_entities[i][j]->getType() == 3) {
 					if (this->_entities[i][j]->getDirection() == true) {
-						attron(COLOR_PAIR(2));
+						attron(COLOR_PAIR(3));
 						mvprintw(i, j, "*");
 						attron(COLOR_PAIR(1));						
 					}
 					else {
-						attron(COLOR_PAIR(3));
+						attron(COLOR_PAIR(2));
 						mvprintw(i, j, "*");
 						attron(COLOR_PAIR(1));
 					}

@@ -16,12 +16,10 @@ CC = clang++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 LDFLAGS = -lncurses
 
-INC = $(wildcard *.hpp)
+INC = BoardGame.hpp Character.hpp Enemy.hpp Entity.hpp Shoot.hpp ft_retro.hpp
 LIBS =
 
-SRC = $(wildcard *.cpp)
-# SRC = Enemy.cpp BoardGame.cpp Entity.cpp Character.cpp MapGame.cpp main.cpp \
-# 		ft_retro.cpp print.cpp Shoot.cpp
+SRC = BoardGame.cpp Character.cpp Enemy.cpp Entity.cpp Shoot.cpp ft_retro.cpp main.cpp print.cpp
 
 OBJ = $(SRC:%.cpp=%.o)
 
