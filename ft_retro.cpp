@@ -72,7 +72,7 @@ void		print_top(WINDOW *win, BoardGame * board, Entity * perso, time_t begin) {
 
 	mvprintw(0, 15, "HP: %d", perso->getHitPoints());
 
-	mvprintw(0, 30, "Time survive : %d - %d", timer / 60 , timer % 60);
+	mvprintw(0, 30, "Time survive : %dm %ds", timer / 60 , timer % 60);
 
 
 	mvprintw(1, 0, getHSep(getmaxx(win)));
@@ -82,15 +82,6 @@ int						main ( void ) {
 
 	int					key = 0;
 	WINDOW 				*win;
-
-
-	// clock_t 			begin = clock();
-	// time_t start, stop;
-	// clock_t ticks; long count;
-
-	// time(&start);
-	// clock_t				timer;
-	// timer = clock();
 
 	time_t				begin = time(NULL);
 

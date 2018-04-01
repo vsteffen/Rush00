@@ -278,17 +278,34 @@ bool						BoardGame::resolve( void ) {
 			if (list != NULL && list->entity->getYPos() >= this->_nbLines - 1) {
 				deleteEntity(list->entity);
 			}
-			else if (rand() % 5 == 0) {
-				this->moveDown(list->entity);
+			else if (type == 22) {
+				Entity *			perso = this->_list->entity;
+
+				if (rand() % 5 == 0) {
+					this->moveDown(list->entity);
+				}
+				else if (perso->getXPos() > list->entity->getXPos()) {
+					this->moveRight(list->entity);
+				}
+				else if (perso->getXPos() < list->entity->getXPos()) {
+					this->moveLeft(list->entity);
+				}
+				else {
+					this->shoot(list->entity);
+				}
 			}
-			else if (rand() % 10 == 0) {
+			
+			else if (rand() % 15 == 0) {
 				this->moveRight(list->entity);
 			}
-			else if (rand() % 10 == 0) {
+			else if (rand() % 15 == 0) {
 				this->moveLeft(list->entity);
 			}
-			else if (list->entity->getType() == 12 && rand() % 30 == 1) {
+			else if ((type == 12 || type == 22) && rand() % 30 == 1) {
 				this->shoot(list->entity);
+			}
+			else {
+				this->moveDown(list->entity);
 			}
 		}
 		else if (type == 3) {
@@ -312,14 +329,18 @@ bool						BoardGame::resolve( void ) {
 		list = this->_save;
 	}
 
-	if (this->_nbEntities < this->_nbCols) {
+	if (this->_nbEntities < this->_nbCols * 2) {
 		if (rand() % 10 == 1) {
 			if (rand() % 5 == 1) {
-				Entity * newEnemy = new Enemy("invader", 12, rand() % this->_nbCols - 1, 1, 1, 1, 10, 1);
+				Entity * newEnemy = new Enemy("invader", 12, rand() % this->_nbCols - 1, 1, 1, 1, 20, 1);
+				this->addEntity(newEnemy);
+			}
+			else if (rand() % 5 == 1) {
+				Entity * newEnemy = new Enemy("stupid", 22, rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
 				this->addEntity(newEnemy);
 			}
 			else {
-				Entity * newEnemy = new Enemy("enemy", 2, rand() % this->_nbCols - 1, 1, 1, 1, 5, 1);
+				Entity * newEnemy = new Enemy("enemy", 2, rand() % this->_nbCols - 1, 1, 1, 1, 10, 1);
 				this->addEntity(newEnemy);
 			}
 		}
