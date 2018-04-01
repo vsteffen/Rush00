@@ -225,9 +225,9 @@ void						BoardGame::printBoard( void ) const {
 		for (int j = 0; j < this->_nbCols; j++) {
 			if (this->_entities[i][j] != NULL) {
 				if (this->_entities[i][j]->getType() == 1) {
-					attron(COLOR_PAIR(4));
+					attron(COLOR_PAIR(this->_entities[i][j]->getHitPoints()));
 					mvprintw(i, j, "O");
-					attron(COLOR_PAIR(1));
+					attron(COLOR_PAIR(6));
 				}
 				else if (this->_entities[i][j]->getType() % 10 == 2) {
 					if (this->_entities[i][j]->getType() == 2) {
@@ -239,14 +239,14 @@ void						BoardGame::printBoard( void ) const {
 				}
 				else if (this->_entities[i][j]->getType() == 3) {
 					if (this->_entities[i][j]->getDirection() == true) {
-						attron(COLOR_PAIR(3));
+						attron(COLOR_PAIR(8));
 						mvprintw(i, j, "*");
-						attron(COLOR_PAIR(1));						
+						attron(COLOR_PAIR(6));						
 					}
 					else {
-						attron(COLOR_PAIR(2));
+						attron(COLOR_PAIR(7));
 						mvprintw(i, j, "*");
-						attron(COLOR_PAIR(1));
+						attron(COLOR_PAIR(6));
 					}
 				}
 			}
