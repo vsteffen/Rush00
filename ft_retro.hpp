@@ -7,6 +7,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <time.h>
 
 char const		*getHSep(int win_width);
 void			debug_int(int height, int width, int integer);
