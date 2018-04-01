@@ -344,11 +344,11 @@ bool						BoardGame::solveMove( Entity * entity1, Entity * entity2 ) {
 		this->setScore(this->getScore() + entity1->getScore());
 	}
 
-	if (tmp2 == true && entity2->getType() != 1) {
+	if (tmp2 == true) {
 		this->_save = this->_list;
 		deleteEntity(entity2);
 	}
-	if (tmp1 == true && entity1->getType() != 1) {
+	if (tmp1 == true) {
 		this->_save = this->_list;
 		deleteEntity(entity1);
 

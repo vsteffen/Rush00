@@ -51,9 +51,14 @@ Character &					Character::operator=( Character const & rhs ) {
 
 bool						Character::touch( Entity * entity ) {
 	// 2 == Enemy
-	if (entity->getType() % 10 == 2 || entity->getType() % 10 == 3) {
+	if (entity->getType() % 10 == 2) {
 		this->setHitPoints(0);
-		return true;
+	}
+	else if (entity->getType() % 10 == 3) {
+		if ((this->getHitPoints() - 1) >= 0)
+			this->setHitPoints(this->getHitPoints() - 1);
+		else
+			this->setHitPoints(0);
 	}
 	return false;
 	// if (entity->getType() == Enemy::getType()) {

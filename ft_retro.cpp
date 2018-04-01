@@ -30,11 +30,6 @@
 #define MIN_WIN_HEIGHT 30
 #define MIN_WIN_WIDTH 90
 
-// void			print_top(WINDOW *win, BoardGame * board);
-
-
-int			score = 0;
-
 void resizeHandler(int sig) {
 	(void)sig;
 	endwin();
@@ -92,13 +87,16 @@ int			handle_key(BoardGame* board, int key, Entity* perso)
 	return (0);
 }
 
-void		print_top(WINDOW *win, BoardGame * board) {
+void		print_top(WINDOW *win, BoardGame * board, Entity * perso) {
 	std::string		str("");
 
 	str += getmaxy(win);
-	mvprintw(0, 0, "SCORE: ");
+	mvprintw(0, 0, "SCORE: %d", board->getScore());
 
-	debug_int(0, 7, board->getScore());
+	// debug_int(0, 7, board->getScore());
+
+	mvprintw(0, 14, "HP: %d", perso->getHitPoints());
+
 
 	mvprintw(1, 0, getHSep(getmaxx(win)));
 }
@@ -121,19 +119,17 @@ int				main ( void ) {
 	perso->setYPos(playerPosY);
 	board->addEntity(perso);
 
-	std::ofstream out("log.txt");
+	// std::ofstream out("log.txt");
     // std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+    // std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
 	while (key != 27) {
-		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 29, "Appuyez sur espace pour commencer ou sur échap pour quitter");
+		mvprintw(getmaxy(win) / 2, (getmaxx(win) / 2) - 35, "Appuyez sur espace pour commencer ou sur échap pour quitter");
 		key = getch();
 
 		if (key == ' ') {
-			// mvprintw(getmaxy(win) - 15, 0, "CA MARCHE ");
 			while(key != 27 && key != 10) {
-				print_top(win, board);
-				// print_top(win);
+				print_top(win, board, perso);
 				board->printBoard();
 				key = getch();
 				if (perso->getHitPoints() == 0) {
@@ -149,7 +145,6 @@ int				main ( void ) {
 				if (handle_key(board, key, perso))
 					break ;
 				board->resolve();
-				// score--;
 				wrefresh(win);
 				usleep(DELAY);
 				clear();

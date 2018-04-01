@@ -28,15 +28,6 @@ void	debug_int(int height, int width, int integer) {
 	return ;
 }
 
-// void		print_top(WINDOW *win) {
-// 	std::string		str("");
-
-// 	str += getmaxy(win);
-// 	mvprintw(0, 0, "SCORE: ");
-// 	debug_int(0, 7, score++);
-// 	mvprintw(1, 0, getHSep(getmaxx(win)));
-// }
-
 void	print_start(WINDOW *win) {
 	int		y;
 	int		x;
